@@ -18,14 +18,12 @@ namespace Library.Application.Books.Commands.CreateBook
                 Id = new Guid(),
                 IBAN = request.IBAN,
                 Title = request.Title,
-                Description = request.Description,
-                DateBorrow = null,
-                DateReturn = null,
-                AuthorId = request.AuthorId                
+                Description = request.Description,                                
+                AuthorId = request.AuthorId
             };
 
-            await _dbContext.Books.AddAsync(book);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.Books.AddAsync(book).ConfigureAwait(false);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return book.Id;
         }

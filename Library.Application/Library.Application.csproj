@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Library.Domain\Library.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Books\Queries\GetBookDetailsByIBAN\" />
+    <Folder Include="Books\Queries\GetBooks\" />
+  </ItemGroup>
+
 </Project>

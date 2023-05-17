@@ -19,7 +19,7 @@ namespace Library.Application.Books.Commands.DeleteBook
                 throw new NotFoundEntityException(nameof(Book), request.Id);
 
             _dbContext.Books.Remove(book);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return true;
         }

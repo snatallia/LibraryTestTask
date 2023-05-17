@@ -14,12 +14,15 @@ namespace Library.Persistence
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<Borrow> Borrows { get; set; }
+        
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
             : base(options) {  }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new BookConfiguration());
             builder.ApplyConfiguration(new AuthorConfiguration());
+            builder.ApplyConfiguration(new BorrowConfiguration());
             base.OnModelCreating(builder);
         }
     }

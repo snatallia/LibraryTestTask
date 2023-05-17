@@ -15,9 +15,10 @@ namespace Library.Persistence.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Book> builder)
         {
             builder.HasKey(b => b.Id);
-            builder.HasIndex(b => b.Id).IsUnique();
+            builder.HasIndex(b => b.IBAN).IsUnique();
+            builder.Property(b => b.IBAN).IsRequired().HasMaxLength(13);
             builder.Property(b => b.Title).IsRequired().HasMaxLength(250);
-            builder.HasOne<Author>(book => book.Author)
+            builder.HasOne<Author>(b => b.Author)
                 .WithMany(a => a.Books)
                 .HasForeignKey(b => b.AuthorId);
         }

@@ -14,7 +14,7 @@ namespace Library.Application.Books.Commands.UpdateBook
         
         public async Task<bool> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-            var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
+            var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
             if (book == null)            
                 throw new NotFoundEntityException(nameof(Book), request.Id);            
@@ -22,10 +22,8 @@ namespace Library.Application.Books.Commands.UpdateBook
             book.IBAN = request.IBAN;
             book.Title = request.Title;
             book.Description = request.Description;
-            book.DateBorrow = request.DateBorrow;
-            book.DateReturn = request.DateReturn;
             book.AuthorId = request.AuthorId;
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false); ;
 
             return true;
         }
