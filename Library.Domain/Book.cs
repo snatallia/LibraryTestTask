@@ -10,10 +10,11 @@ namespace Library.Domain
     public class Book
     {
         public Guid Id { get; set; }
+        public int IBAN { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }  
-        public DateTime DateLeave { get; set; }
-        public DateTime DateExp { get; set; }
+        public DateTime DateBorrow { get; set; }
+        public DateTime DateReturn { get; set; }
         public Guid AuthorID { get; set; }
         public Author Author { get; set; } = null!;
     }
