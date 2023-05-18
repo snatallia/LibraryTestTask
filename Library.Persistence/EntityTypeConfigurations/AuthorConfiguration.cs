@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Library.Persistence.EntityTypeConfigurations
 {
-    internal class AuthorConfiguration : IEntityTypeConfiguration<Author>
+    public class AuthorConfiguration : IEntityTypeConfiguration<Author>
     {
         public void Configure(EntityTypeBuilder<Author> builder)
         {

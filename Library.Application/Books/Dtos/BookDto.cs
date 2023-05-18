@@ -12,9 +12,7 @@ namespace Library.Application.Books.Dtos
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Book, BookDetailDto>()
-                .ForMember(bookDto => bookDto.IBAN,
-                    opt => opt.MapFrom(book => book.IBAN))
+            profile.CreateMap<Book, BookDto>()
                 .ForMember(bookDto => bookDto.Title,
                     opt => opt.MapFrom(book => book.Title))
                 .ForMember(bookDto => bookDto.AuthorFullName,
