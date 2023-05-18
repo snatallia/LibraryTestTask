@@ -18,6 +18,7 @@ namespace Library.Application.Books.Commands.CreateBook
                 Id = new Guid(),
                 IBAN = request.IBAN,
                 Title = request.Title,
+                Genre = request.Genre,
                 Description = request.Description,                                
                 AuthorId = request.AuthorId
             };

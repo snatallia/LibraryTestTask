@@ -21,6 +21,7 @@ namespace Library.Application.Books.Commands.UpdateBook
 
             book.IBAN = request.IBAN;
             book.Title = request.Title;
+            book.Genre = request.Genre;
             book.Description = request.Description;
             book.AuthorId = request.AuthorId;
             await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false); ;

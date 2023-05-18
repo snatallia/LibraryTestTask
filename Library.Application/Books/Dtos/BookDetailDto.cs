@@ -8,6 +8,7 @@ namespace Library.Application.Books.Dtos
     {
         public string IBAN { get; set; }
         public string Title { get; set; }
+        public GenreNames Genre { get; set; }
         public string Description { get; set; }
         public DateTime? LastDateBorrow { get; set; }
         public DateTime? LastDateReturn { get; set; }
@@ -20,6 +21,8 @@ namespace Library.Application.Books.Dtos
                     opt => opt.MapFrom(book => book.IBAN))
                 .ForMember(bookDto => bookDto.Title,
                     opt => opt.MapFrom(book => book.Title))
+                .ForMember(bookDto => bookDto.Genre,
+                    opt => opt.MapFrom(book => book.Genre))
                 .ForMember(bookDto => bookDto.Description,
                     opt => opt.MapFrom(book => book.Description))
                 .ForMember(bookDto => bookDto.LastDateBorrow,
