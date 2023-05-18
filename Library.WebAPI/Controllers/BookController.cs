@@ -17,6 +17,14 @@ namespace Library.WebAPI.Controllers
         private readonly IMapper _mapper;
         public BookController(IMapper mapper) => _mapper = mapper;
 
+        /// <summary>
+        /// Get the list of all books
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// Get /book
+        /// </remarks>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<BookList>> GetAll()
         {

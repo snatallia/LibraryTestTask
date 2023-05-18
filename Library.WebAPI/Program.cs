@@ -32,6 +32,7 @@ namespace Library.WebAPI
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCors();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
             //CreateDbIfNotExists(app);
@@ -42,6 +43,12 @@ namespace Library.WebAPI
                 DbInitializer.Initialize(dbInitializer);
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(config => 
+            { 
+                config.RoutePrefix = String.Empty;
+                config.SwaggerEndpoint("swagger/v1/swagger.json", "Library API");
+            });
 
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
