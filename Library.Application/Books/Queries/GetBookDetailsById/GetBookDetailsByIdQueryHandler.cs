@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.Application.Books.Queries.GetBookDetailsById
 {
-    public class GetBookDetailsByIdQueryHandler : IRequestHandler<GetBookDetailsByIdQuery, BookDto>
+    public class GetBookDetailsByIdQueryHandler : IRequestHandler<GetBookDetailsByIdQuery, BookDetailDto>
     {
         private readonly ILibraryDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -16,14 +16,14 @@ namespace Library.Application.Books.Queries.GetBookDetailsById
         public GetBookDetailsByIdQueryHandler(ILibraryDbContext dbContext, IMapper mapper) 
             => (_dbContext, _mapper) = (dbContext, mapper);
         
-        public async Task<BookDto> Handle(GetBookDetailsByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BookDetailDto> Handle(GetBookDetailsByIdQuery request, CancellationToken cancellationToken)
         {
             var book = await _dbContext.Books.FirstOrDefaultAsync(book=> book.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
             if (book == null)
-                throw new NotFoundEntityException(nameof(Book), request.Id);
+                throw new NotFoundEntityException(nameof(Book),"ID", request.Id);
 
-            return _mapper.Map<BookDto>(book);
+            return _mapper.Map<BookDetailDto>(book);
         }
     }
 }

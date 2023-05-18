@@ -16,7 +16,7 @@ namespace Library.Application.Books.Commands.DeleteBook
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
 
             if (book == null)
-                throw new NotFoundEntityException(nameof(Book), request.Id);
+                throw new NotFoundEntityException(nameof(Book),"ID", request.Id);
 
             _dbContext.Books.Remove(book);
             await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

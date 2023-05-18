@@ -17,7 +17,7 @@ namespace Library.Application.Books.Commands.UpdateBook
             var book = await _dbContext.Books.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
             if (book == null)            
-                throw new NotFoundEntityException(nameof(Book), request.Id);            
+                throw new NotFoundEntityException(nameof(Book),"ID", request.Id);            
 
             book.IBAN = request.IBAN;
             book.Title = request.Title;

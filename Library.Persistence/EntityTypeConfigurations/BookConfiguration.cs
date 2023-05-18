@@ -16,7 +16,7 @@ namespace Library.Persistence.EntityTypeConfigurations
         {
             builder.HasKey(b => b.Id);
             builder.HasIndex(b => b.IBAN).IsUnique();
-            builder.Property(b => b.IBAN).IsRequired().HasMaxLength(13);
+            builder.Property(b => b.IBAN).IsRequired().HasMaxLength(17);//xxx-x-xxxxxx-xx-x
             builder.Property(b => b.Title).IsRequired().HasMaxLength(250);
             builder.HasOne<Author>(b => b.Author)
                 .WithMany(a => a.Books)

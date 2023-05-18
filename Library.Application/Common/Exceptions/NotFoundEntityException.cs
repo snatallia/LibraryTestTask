@@ -2,6 +2,6 @@
 {
     public class NotFoundEntityException: Exception
     {
-        public NotFoundEntityException(string name, object key): base($"Entity {name} with key {key} not found") {}
+        public NotFoundEntityException(string name, string fieldname, object key): base($"Entity {name} with field {fieldname} = {key} not found") {}
     }
 }
