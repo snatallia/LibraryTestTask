@@ -23,7 +23,7 @@ namespace Library.Application.Books.Commands.CreateBook
                 AuthorId = request.AuthorId
             };
 
-            await _dbContext.Books.AddAsync(book).ConfigureAwait(false);
+            await _dbContext.Books.AddAsync(book,cancellationToken).ConfigureAwait(false);
             await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             return book.Id;
