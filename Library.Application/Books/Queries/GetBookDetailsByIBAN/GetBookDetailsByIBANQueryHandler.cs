@@ -21,7 +21,7 @@ namespace Library.Application.Books.Queries.GetBookDetailsByIBAN
             var book = await _dbContext.Books.FirstOrDefaultAsync(book => book.IBAN == request.IBAN, cancellationToken).ConfigureAwait(false);
 
             if (book == null)
-                throw new NotFoundEntityException(nameof(Book), "IBAN", request.IBAN);
+                throw new EntityNotFoundException(nameof(Book), "IBAN", request.IBAN);
 
             return _mapper.Map<BookDetailDto>(book);
         }

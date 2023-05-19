@@ -16,7 +16,7 @@ namespace Library.Application.Authors.Commands.DeleteAuthor
             var author = await _dbContext.Authors.FirstOrDefaultAsync(b => b.Id == request.Id, cancellationToken);
 
             if (author == null)
-                throw new NotFoundEntityException(nameof(Author), "ID", request.Id);
+                throw new EntityNotFoundException(nameof(Author), "ID", request.Id);
 
             _dbContext.Authors.Remove(author);
             await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);

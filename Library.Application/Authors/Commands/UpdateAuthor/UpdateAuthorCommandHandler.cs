@@ -6,22 +6,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Library.Application.Authors.Commands.UpdateAuthor
 {
-    public class UpdateAuthorCommandHandler:IRequestHandler<UpdateAuthorCommand, Guid>
+    public class UpdateAuthorCommandHandler:IRequestHandler<UpdateAuthorCommand, bool>
     {
         private readonly ILibraryDbContext _dbContext;
         public UpdateAuthorCommandHandler(ILibraryDbContext dbContext) => _dbContext = dbContext;
 
-        public async Task<Guid> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
         {
             var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken).ConfigureAwait(false);
             
             if(author == null)
-                throw new NotFoundEntityException(nameof(Author), "ID", request.Id);
+                throw new EntityNotFoundException(nameof(Author), "ID", request.Id);
 
             author.Name = request.Name;
             author.Surname = request.Surname;
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            return author.Id;
+            return true;
         }
     }
 }

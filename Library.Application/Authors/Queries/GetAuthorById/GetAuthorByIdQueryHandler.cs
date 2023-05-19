@@ -21,7 +21,7 @@ namespace Library.Application.Authors.Queries.GetAuthorById
             var author = await _dbContext.Authors.FirstOrDefaultAsync(a => a.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
             if (author == null)
-                throw new NotFoundEntityException(nameof(Author), "ID", request.Id);
+                throw new EntityNotFoundException(nameof(Author), "ID", request.Id);
             
             return author;
         }

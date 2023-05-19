@@ -21,7 +21,7 @@ namespace Library.Application.Books.Queries.GetBookDetailsById
             var book = await _dbContext.Books.FirstOrDefaultAsync(book=> book.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
             if (book == null)
-                throw new NotFoundEntityException(nameof(Book),"ID", request.Id);
+                throw new EntityNotFoundException(nameof(Book),"ID", request.Id);
 
             return _mapper.Map<BookDetailDto>(book);
         }

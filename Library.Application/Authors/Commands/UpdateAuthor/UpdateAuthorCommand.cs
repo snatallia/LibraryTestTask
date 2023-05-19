@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Application.Authors.Commands.UpdateAuthor
 {
-    public class UpdateAuthorCommand:IRequest<Guid>
+    public class UpdateAuthorCommand:IRequest<bool>
     {
         public Guid Id { get; set; }
         [Required]
