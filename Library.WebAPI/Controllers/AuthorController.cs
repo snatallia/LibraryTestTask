@@ -5,6 +5,7 @@ using Library.Application.Authors.Commands.UpdateAuthor;
 using Library.Application.Authors.Queries.GetAuthorById;
 using Library.Application.Authors.Queries.GetAuthors;
 using Library.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.WebAPI.Controllers
@@ -13,6 +14,7 @@ namespace Library.WebAPI.Controllers
     public class AuthorController : BaseController
     {
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IList<Author>>> GetAll()
         {
             var query = new GetAuthorsQuery();
@@ -21,6 +23,7 @@ namespace Library.WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Author>> GetById(Guid id)
         {
             var query = new GetAuthorByIdQuery
@@ -32,6 +35,7 @@ namespace Library.WebAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Guid>> Add([FromBody] Author newAuthor)
         {
             var authorId = await Mediator.Send(new CreateAuthorCommand
@@ -44,6 +48,7 @@ namespace Library.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] Author author)
         {
             await Mediator.Send(new UpdateAuthorCommand
@@ -56,6 +61,7 @@ namespace Library.WebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteAuthorCommand

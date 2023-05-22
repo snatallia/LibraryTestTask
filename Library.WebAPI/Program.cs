@@ -2,17 +2,65 @@ using Library.Application;
 using Library.Application.Common.Mappings;
 using Library.Application.Interfaces;
 using Library.Persistence;
+using Library.WebAPI.Auth;
 using Library.WebAPI.Middleware;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
+
+
 
 namespace Library.WebAPI
 {
     public class Program
-    {       
+    {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            
+            var connectionString = builder.Configuration["AuthConnection"];
+            builder.Services.AddDbContext<AuthDbContext>(options =>
+            {
+                options.UseSqlite(connectionString);
+            });
+
+
+            // For Identity
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(config=>
+                {
+                    config.Password.RequiredLength = 4;
+                    config.Password.RequireDigit = false;
+                    config.Password.RequireUppercase = false;
+                })
+                .AddEntityFrameworkStores<AuthDbContext>()
+                .AddDefaultTokenProviders();
+
+            // Adding Authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            // Adding Jwt Bearer
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                    ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+                };
+            });
 
 
             builder.Services.AddAutoMapper(config =>
@@ -21,10 +69,6 @@ namespace Library.WebAPI
                 config.AddProfile(new AssemblyMappingProfile(typeof(ILibraryDbContext).Assembly));
             });
 
-
-            //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            //builder.Services.AddAutoMapper(typeof(ILibraryDbContext).Assembly);
-
             builder.Services.AddApplication();
             builder.Services.AddPersistence(builder.Configuration);
 
@@ -32,19 +76,13 @@ namespace Library.WebAPI
                 .AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-            //builder.Services.AddTransient<ExceptionHandlingMiddleware>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen();
-
             var app = builder.Build();
-            //CreateDbIfNotExists(app);
-            using (var scope = app.Services.CreateScope())
-            {
-                var dbInitializer = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
-                // use dbInitializer
-                DbInitializer.Initialize(dbInitializer);
-            }
+            CreateDbIfNotExists(app);
+           
+
             app.UseExceptionHandlingMiddleware();
             app.UseSwagger();
             app.UseSwaggerUI(config => 
@@ -55,6 +93,8 @@ namespace Library.WebAPI
 
             app.UseRouting();
             app.UseCors("AllowAll");
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.UseHttpsRedirection();
             app.UseEndpoints(endpoints =>
             {
@@ -67,20 +107,21 @@ namespace Library.WebAPI
 
         private static void CreateDbIfNotExists(IHost host)
         {
-            using (var scope = host.Services.CreateScope())
+            using var scope = host.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
             {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<LibraryDbContext>();
-                    DbInitializer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred creating the DB.");
-                }
-            }        
+             
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
+                DbInitializer.Initialize(dbInitializer);
+                var authDbInitializer = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+                AuthDbInitializer.Initialize(authDbInitializer);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred creating the DB.");
+            }
         }
     }
 }
