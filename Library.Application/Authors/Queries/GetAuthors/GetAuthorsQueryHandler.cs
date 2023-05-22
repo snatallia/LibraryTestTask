@@ -12,7 +12,7 @@ namespace Library.Application.Authors.Queries.GetAuthors
 
         public async Task<IList<Author>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
         {
-            return await _dbContext.Authors.ToListAsync().ConfigureAwait(false);
+            return await _dbContext.Authors.Include(a=>a.Books).ToListAsync().ConfigureAwait(false);
         }
     }
 }

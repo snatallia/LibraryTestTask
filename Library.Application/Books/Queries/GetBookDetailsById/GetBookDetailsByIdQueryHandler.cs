@@ -18,7 +18,8 @@ namespace Library.Application.Books.Queries.GetBookDetailsById
         
         public async Task<BookDetailDto> Handle(GetBookDetailsByIdQuery request, CancellationToken cancellationToken)
         {
-            var book = await _dbContext.Books.FirstOrDefaultAsync(book=> book.Id == request.Id, cancellationToken).ConfigureAwait(false);
+            var book = await _dbContext.Books.Include(b=>b.Borrows).Include(b=>b.Author)
+                .FirstOrDefaultAsync(book=> book.Id == request.Id, cancellationToken).ConfigureAwait(false);
 
             if (book == null)
                 throw new EntityNotFoundException(nameof(Book),"ID", request.Id);

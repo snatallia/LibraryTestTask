@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Library.WebAPI
 {
@@ -29,7 +30,11 @@ namespace Library.WebAPI
             builder.Services.AddApplication();
             builder.Services.AddPersistence(builder.Configuration);
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen();
@@ -50,9 +55,15 @@ namespace Library.WebAPI
                 config.SwaggerEndpoint("swagger/v1/swagger.json", "Library API");
             });
 
+            app.UseRouting();
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
-            app.MapControllers();            
+            //app.MapControllers();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+            
 
             app.Run();
         }

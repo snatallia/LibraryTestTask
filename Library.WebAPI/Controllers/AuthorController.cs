@@ -1,4 +1,5 @@
-﻿using Library.Application.Authors.Commands.CreateAuthor;
+﻿using AutoMapper;
+using Library.Application.Authors.Commands.CreateAuthor;
 using Library.Application.Authors.Commands.DeleteAuthor;
 using Library.Application.Authors.Commands.UpdateAuthor;
 using Library.Application.Authors.Queries.GetAuthorById;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.WebAPI.Controllers
 {
+    [Route("api/[controller]")]
     public class AuthorController : BaseController
     {
         [HttpGet]

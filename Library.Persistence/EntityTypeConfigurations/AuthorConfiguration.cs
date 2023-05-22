@@ -17,6 +17,10 @@ namespace Library.Persistence.EntityTypeConfigurations
         {
             builder.HasKey(author => author.Id);
             builder.HasIndex(author => author.Id).IsUnique();
+            builder.HasMany<Book>(a => a.Books)
+                .WithOne(b => b.Author)
+                .HasForeignKey(b => b.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -9,10 +9,6 @@ namespace Library.Persistence.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Borrow> builder)
         {
             builder.HasKey(b => b.Id);
-            builder.HasOne<Book>(br => br.Book)
-                .WithMany(book => book.Borrows)
-                .HasForeignKey(br => br.BookId);
-
         }
     }
 }
