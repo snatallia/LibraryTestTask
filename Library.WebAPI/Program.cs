@@ -2,9 +2,7 @@ using Library.Application;
 using Library.Application.Common.Mappings;
 using Library.Application.Interfaces;
 using Library.Persistence;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Library.WebAPI.Middleware;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -34,7 +32,7 @@ namespace Library.WebAPI
                 .AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-
+            //builder.Services.AddTransient<ExceptionHandlingMiddleware>();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCors();
             builder.Services.AddSwaggerGen();
@@ -47,7 +45,7 @@ namespace Library.WebAPI
                 // use dbInitializer
                 DbInitializer.Initialize(dbInitializer);
             }
-
+            app.UseExceptionHandlingMiddleware();
             app.UseSwagger();
             app.UseSwaggerUI(config => 
             { 
@@ -58,7 +56,6 @@ namespace Library.WebAPI
             app.UseRouting();
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
-            //app.MapControllers();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
