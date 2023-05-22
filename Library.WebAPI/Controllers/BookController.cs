@@ -71,16 +71,16 @@ namespace Library.WebAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Book newBook)
+        public async Task<IActionResult> Update([FromBody] Book book)
         {
             await Mediator.Send(new UpdateBookCommand
             {
-                Id = newBook.Id,
-                IBAN = newBook.IBAN,
-                Title = newBook.Title,
-                Genre = newBook.Genre,
-                Description = newBook.Description,
-                AuthorId = newBook.AuthorId
+                Id = book.Id,
+                IBAN = book.IBAN,
+                Title = book.Title,
+                Genre = book.Genre,
+                Description = book.Description,
+                AuthorId = book.AuthorId
             });
 
             return NoContent();
