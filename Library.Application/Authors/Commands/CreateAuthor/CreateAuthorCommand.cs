@@ -6,7 +6,6 @@ namespace Library.Application.Authors.Commands.CreateAuthor
 {
     public class CreateAuthorCommand: IRequest<Guid>
     {
-        [Required]
         public string Name { get; set; }      
         public string Surname { get; set; }
     }

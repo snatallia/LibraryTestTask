@@ -8,7 +8,8 @@ namespace Library.Persistence.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<Borrow> builder)
         {
-            builder.HasKey(b => b.Id);
+            builder.HasKey(br => br.Id);
+            builder.Property(br => br.DateBorrow).IsRequired();
         }
     }
 }

@@ -11,7 +11,6 @@ namespace Library.Application.Authors.Commands.UpdateAuthor
     public class UpdateAuthorCommand:IRequest<bool>
     {
         public Guid Id { get; set; }
-        [Required]
         public string Name { get; set; }        
         public string Surname { get; set; }
     }
