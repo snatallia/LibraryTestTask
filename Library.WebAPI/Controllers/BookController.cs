@@ -7,6 +7,7 @@ using Library.Application.Books.Queries.GetBookDetailsByIBAN;
 using Library.Application.Books.Queries.GetBookDetailsById;
 using Library.Application.Books.Queries.GetBooks;
 using Library.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.WebAPI.Controllers
@@ -25,6 +26,7 @@ namespace Library.WebAPI.Controllers
         /// <response code="401">The user is unauthorized</response>
         /// <response code="500">Inner DB error</response>
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<BookList>> GetAll()
         {
             var query = new GetBooksShortQuery();
@@ -39,6 +41,7 @@ namespace Library.WebAPI.Controllers
         /// <response code="401">The user is unauthorized</response>
         /// <response code="500">Inner DB error</response>
         [HttpGet("short")]
+        [Authorize]
         public async Task<ActionResult<BookList>> GetShortData()
         {
             var query = new GetBooksShortQuery();
@@ -49,7 +52,6 @@ namespace Library.WebAPI.Controllers
         /// <summary>
         /// Get Book data by Id
         /// </summary>
-        /// <returns> Book {} </returns>
         /// <response code="401">The user is unauthorized</response>
         /// <response code="404">Not found  entity exception</response>
         /// <response code="422">Wrong field format</response>
@@ -73,6 +75,7 @@ namespace Library.WebAPI.Controllers
         /// <response code="422">Wrong field format</response>
         /// <response code="500">Inner DB error</response>
         [HttpGet("iban/{iban}")]
+        [Authorize]
         public async Task<ActionResult<BookDetailDto>> GetByIBAN(string iban)
         {
             var query = new GetBookDetailsByIBANQuery
@@ -95,10 +98,10 @@ namespace Library.WebAPI.Controllers
         /// </remarks>
         /// <response code="400">There's not required field (IBAN, Title, AuthorId)</response>
         /// <response code="401">The user is unauthorized</response>
-        /// <response code="404">Not found update entity exception</response>
         /// <response code="422">Wrong field format (f.e., IBAN string(17), Title string(250), AuthorId Guid)</response>
         /// <response code="500">Inner DB error</response>
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Guid>> Add([FromBody] Book newBook)
         {
             var bookiD = await Mediator.Send(new CreateBookCommand
@@ -112,6 +115,7 @@ namespace Library.WebAPI.Controllers
 
             return bookiD;
         }
+
         /// <summary>
         /// Update existing Book 
         /// </summary>
@@ -129,6 +133,7 @@ namespace Library.WebAPI.Controllers
         /// <response code="422">Wrong field format (f.e., IBAN string(17), Title string(250), AuthorId Guid)</response>
         /// <response code="500">Inner DB error</response>
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Update([FromBody] Book book)
         {
             await Mediator.Send(new UpdateBookCommand
@@ -143,6 +148,7 @@ namespace Library.WebAPI.Controllers
 
             return NoContent();
         }
+
         /// <summary>
         /// Delete Book 
         /// </summary>      
@@ -151,6 +157,7 @@ namespace Library.WebAPI.Controllers
         /// <response code="422">Wrong field format</response>
         /// <response code="500">Inner DB error</response>
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteBookCommand

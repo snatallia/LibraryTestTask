@@ -32,6 +32,7 @@ namespace Library.WebAPI
                     config.Password.RequiredLength = 4;
                     config.Password.RequireDigit = false;
                     config.Password.RequireUppercase = false;
+                    config.Password.RequireNonAlphanumeric = false;
                 })
                 .AddEntityFrameworkStores<AuthDbContext>()
                 .AddDefaultTokenProviders();

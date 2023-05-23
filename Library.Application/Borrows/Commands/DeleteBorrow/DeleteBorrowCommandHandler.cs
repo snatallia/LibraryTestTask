@@ -19,6 +19,7 @@ namespace Library.Application.Borrows.Commands.DeleteBorrow
                 throw new EntityNotFoundException(nameof(Book), "ID", request.Id);
             
             _dbContext.Borrows.Remove(borrow);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             return true;
         }
     }
