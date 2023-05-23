@@ -1,9 +1,10 @@
-﻿using Library.Application.Books.Dtos;
+﻿using Library.Domain;
 using MediatR;
 
 namespace Library.Application.Books.Queries.GetBooks
 {
-    public class GetBooksQuery: IRequest<BookList>
+    public class GetBooksQuery: IRequest<IList<Book>>
     {
+
     }
 }

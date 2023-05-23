@@ -13,6 +13,9 @@ namespace Library.WebAPI.Controllers
     [Route("api/[controller]")]
     public class AuthorController : BaseController
     {
+        /// <summary>
+        /// Get the list of all authors. 
+        /// </summary>        
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IList<Author>>> GetAll()
@@ -21,6 +24,7 @@ namespace Library.WebAPI.Controllers
             var authors = await Mediator.Send(query);
             return Ok(authors);
         }
+
 
         [HttpGet("{id}")]
         [Authorize]

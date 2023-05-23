@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /Library.WebAPI/library.db-wal
 /Library.WebAPI/library.db-shm
+/Library.WebAPI/auth.db-wal
+/Library.WebAPI/auth.db-shm

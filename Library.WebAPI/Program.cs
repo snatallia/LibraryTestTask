@@ -12,8 +12,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 
-
-
 namespace Library.WebAPI
 {
     public class Program
@@ -27,7 +25,6 @@ namespace Library.WebAPI
             {
                 options.UseSqlite(connectionString);
             });
-
 
             // For Identity
             builder.Services.AddIdentity<IdentityUser, IdentityRole>(config=>
@@ -62,8 +59,13 @@ namespace Library.WebAPI
                 };
             });
 
+           // builder.Services.ConfigureApplicationCookie(config =>
+         //   {
+         //       config.Cookie.Name = "Library.Identify.Cookies";
+          //  });
 
-            builder.Services.AddAutoMapper(config =>
+
+                builder.Services.AddAutoMapper(config =>
             {
                 config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
                 config.AddProfile(new AssemblyMappingProfile(typeof(ILibraryDbContext).Assembly));
@@ -78,7 +80,13 @@ namespace Library.WebAPI
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCors();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(config =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
+            });
+
             var app = builder.Build();
             CreateDbIfNotExists(app);
            

@@ -6,7 +6,7 @@ namespace Library.Application.Books.Queries.GetBookDetailsByIBAN
     {
         public GetBookDetailsByIBANQueryValidation()
         {
-            RuleFor(book => book.IBAN).NotEmpty();
+            RuleFor(book => book.IBAN).NotEmpty().MaximumLength(17);
         }
     }
 }
